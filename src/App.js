@@ -13,6 +13,7 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <button className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded">Tailwind, wow!</button>
       </div>
     );
   }
