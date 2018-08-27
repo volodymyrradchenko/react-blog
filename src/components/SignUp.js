@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { auth } from '../firebase';
 
 import * as routes from '../constants/routes';
 
@@ -29,7 +30,21 @@ class SignUpForm extends Component {
     }
 
     onSubmit = (event) => {
+        const {
+            username,
+            email,
+            passwordOne,
+        } = this.state;
 
+        auth.doCreateUserWithEmailAndPassword(email, passwordOne)
+            .then(authUser => {
+                this.setState({ ...INITIAL_STATE })
+            })
+            .catch(error => {
+                this.setState(byPropKey('error', error));
+            });
+
+        event.preventDefault();
     }
 
     render() {
@@ -40,6 +55,12 @@ class SignUpForm extends Component {
             passwordTwo,
             error,
         } = this.state;
+
+        const isInvalid =
+            passwordOne !== passwordTwo ||
+            passwordOne === '' ||
+            email === '' ||
+            username === ''
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -67,7 +88,7 @@ class SignUpForm extends Component {
                     type="password"
                     placeholder="Confirm Password"
                 />
-                <button type="submit">
+                <button disabled={isInvalid} type="submit">
                     Sign Up
         </button>
 
