@@ -10,6 +10,7 @@ import HomePage from './Home';
 import AccountPage from './Account';
 
 import * as routes from '../constants/routes';
+import { firebase } from '../firebase';
 
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,14 @@ class App extends Component {
     this.state = {
       authUser: null,
     };
+  }
+
+  componentDidMount() {
+      firebase.auth.onAuthStateChanged(authUser => {
+          authUser
+            ? this.setState({ authUser })
+            : this.setState({ authUser: null });
+      });
   }
 
   render() {
